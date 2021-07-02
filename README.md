@@ -1,0 +1,1 @@
+echo "# Allelica" >> README.md

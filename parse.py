@@ -26,7 +26,7 @@ class Parse:
         res.columns = ['Run #','Sample ID', 'Array Position']
         res.to_csv(outpath,sep='\t', index=False)
 
-    def process_dask(self, outpath):
+    def process_dask(self, outpath, part):
 
         """
         Read the csv From "self.path" and 
@@ -36,7 +36,7 @@ class Parse:
         """
 
         df = pd.read_excel(self.path)
-        ddf = dd.from_pandas(df, npartitions=4)
+        ddf = dd.from_pandas(df, npartitions=part)
         out = ddf.groupby(['Run #','Sample ID'])['Array Position'].apply(lambda x: ','.join(map(str, x)), meta=pd.Series(dtype='str', name='Array Position'))
         out = out.compute()
         
